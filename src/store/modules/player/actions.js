@@ -6,7 +6,8 @@ import {
   specialAttackPower3,
   healPower,
   handleMonsterDamage,
-} from "../helpers/playerHelpers"
+  calculateRageGain,
+} from "../helpers/playerHelpers";
 
 import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../../firebase";
@@ -14,9 +15,9 @@ import { db, auth } from "../../../firebase";
 export default {
   //normal attacks
   attackMonster({ state, commit, rootState, dispatch }) {
-    const name= state.name
+    const name = state.name;
     const damage = normalAttackPower(state.level);
-    const rageGain = Math.floor(damage * 0.6);
+    const rageGain = calculateRageGain(damage, state.level);
     commit("addRage", rageGain); // player gets rage on hitting
     commit("incrementRound");
     dispatch(
@@ -36,12 +37,12 @@ export default {
   },
 
   doubleAttackMonster({ state, commit, rootState, dispatch }) {
-    const name= state.name
+    const name = state.name;
     commit("incrementRound");
     for (let i = 0; i < 2; i++) {
       if (rootState.monster.hp <= 0) break;
       const damage = doubleAttackPower(state.level);
-      const rageGain = Math.floor(damage * 0.4);
+      const rageGain = calculateRageGain(damage, state.level);
       handleMonsterDamage({ commit, rootState, dispatch }, damage);
       commit("addRage", rageGain);
 
@@ -62,8 +63,8 @@ export default {
 
   //special attacks
   specialAttackRageStrike({ commit, state, rootState, dispatch }) {
-    const name= state.name
-    if (state.rage < 15) return; 
+    const name = state.name;
+    if (state.rage < 15) return;
     const damage = specialAttackPower1(state.level);
     handleMonsterDamage({ commit, rootState, dispatch }, damage);
     commit("subtractRage", 15);
@@ -83,7 +84,7 @@ export default {
   },
 
   specialAttackDeepStrike({ commit, state, rootState, dispatch }) {
-    const name= state.name
+    const name = state.name;
     if (state.rage < 25) return;
     const damage = specialAttackPower2(state.level);
     handleMonsterDamage({ commit, rootState, dispatch }, damage);
@@ -104,7 +105,7 @@ export default {
   },
 
   specialAttackThunderStrike({ commit, state, rootState, dispatch }) {
-    const name= state.name
+    const name = state.name;
     if (state.rage < 30) return;
     const damage = specialAttackPower3(state.level);
     handleMonsterDamage({ commit, rootState, dispatch }, damage);
@@ -126,7 +127,7 @@ export default {
 
   // heal
   restoreHealth({ commit, state, dispatch }) {
-    const name= state.name
+    const name = state.name;
     if (state.round < state.nextHealRound) return;
     const heal = healPower(state.level, state.maxHp);
     const newHp = Math.min(state.hp + heal, state.maxHp);
@@ -172,7 +173,7 @@ export default {
           playerDeaths: state.playerDeaths,
           round: state.round,
           nextHealRound: state.nextHealRound,
-          name: state.name
+          name: state.name,
         },
       });
     } catch (err) {

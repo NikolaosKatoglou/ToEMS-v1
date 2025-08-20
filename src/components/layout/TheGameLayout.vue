@@ -49,6 +49,7 @@ import battleWin from "../../assets/audio/battle-win.wav";
 import battleLoss from "../../assets/audio/battle-loss.wav";
 import battleTheme from "../../assets/audio/battle-theme.mp3";
 import attackSound from "../../assets/audio/attacks/medium-attack-2.wav";
+import attackSound2 from "../../assets/audio/attacks/medium-attack-3.wav";
 import specialAttackSound from "../../assets/audio/attacks/heavy-attack-3.wav";
 import healSound from "../../assets/audio/attacks/heal.wav";
 import escapeSound from "../../assets/audio/attacks/escape.wav";
@@ -70,6 +71,7 @@ export default {
       lossAudio: new Audio(battleLoss),
       battleAudio: new Audio(battleTheme),
       attackAudio: new Audio(attackSound),
+      attackAudio2: new Audio(attackSound2),
       specialAttackAudio: new Audio(specialAttackSound),
       healAudio: new Audio(healSound),
       escapeAudio: new Audio(escapeSound),
@@ -88,7 +90,12 @@ export default {
       canUseHeal: "player/canUseHeal",
     }),
     canUseSpecialAttack() {
-      return this.playerRage >= 15;
+      let cost;
+      if (this.playerLevel >= 25) cost = 30;
+      else if (this.playerLevel >= 15) cost = 25;
+      else cost = 15;
+
+      return this.playerRage >= cost;
     },
   },
   methods: {
@@ -140,6 +147,16 @@ export default {
       this.attackAudio.volume = 0.02;
       this.attackAudio.play();
     },
+    playDoubleAttackSound() {
+      this.attackAudio.currentTime = 0;
+      this.attackAudio.volume = 0.02;
+      this.attackAudio.play();
+      setTimeout(() => {
+        this.attackAudio2.currentTime = 0;
+        this.attackAudio2.volume = 0.02;
+        this.attackAudio2.play();
+      }, 100);
+    },
 
     playSpecialAttackSound() {
       this.specialAttackAudio.currentTime = 0;
@@ -172,7 +189,7 @@ export default {
     },
 
     doubleAttackMonster() {
-      this.playAttackSound();
+      this.playDoubleAttackSound();
       this.playAttackSound();
       this.$store.dispatch("player/doubleAttackMonster");
       this.checkWinner();

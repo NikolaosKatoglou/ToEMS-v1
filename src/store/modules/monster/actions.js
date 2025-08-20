@@ -1,6 +1,7 @@
 import { monsterList } from "../../../data/monsterList";
 import { monsterHpBonuses } from "../../../data/monsterHpBonuses";
 import { monsterDamageMultipliers } from "../../../data/monsterDamageMultipliers";
+import { calculateRageGain } from "../helpers/playerHelpers";
 
 function getRandomValue(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -15,7 +16,7 @@ function calculateMonsterHp(level, monsterType) {
 }
 
 function getMonsterDamageRange(level, monsterType) {
-  const baseDamage = 10 + level * 0.8;
+  const baseDamage = 9 + level * 0.8;
   const typeMultiplier = monsterDamageMultipliers[monsterType] || 1;
   const minDamage = Math.floor(baseDamage * typeMultiplier);
   const maxDamage = Math.floor((baseDamage + level * 0.5) * typeMultiplier);
@@ -28,13 +29,13 @@ function getMonsterDamageRange(level, monsterType) {
 
 export default {
   attackPlayer({ commit, rootState, dispatch }) {
-    const playerName = rootState.player.name
+    const playerName = rootState.player.name;
     const level = rootState.monster.level;
     const monsterType = rootState.monster.name;
     const { min, max } = getMonsterDamageRange(level, monsterType);
     const damage = getRandomValue(min, max);
     const playerHp = rootState.player.hp - damage;
-    const rageGain = Math.floor(damage * 0.5);
+    const rageGain = calculateRageGain(damage, level);
 
     commit("player/addRage", rageGain, { root: true });
     commit("player/setHp", playerHp, { root: true });
