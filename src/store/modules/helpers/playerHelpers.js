@@ -64,9 +64,3 @@ export function handleMonsterDamage({ commit, rootState, dispatch }, damage) {
 export function calculateRageGain(damage) {
   return Math.floor(5 + Math.log10(damage + 1) * 3);
 }
-
-export function getRageCost(level) {
-  if (level >= 25) return 30;
-  if (level >= 15) return 25;
-  return 15;
-}
