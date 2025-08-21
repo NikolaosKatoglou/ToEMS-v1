@@ -220,9 +220,11 @@ watch(
   [showStats, showGameInfo, showMonsterDialog],
   ([stats, gameInfo, monsterDialog]) => {
     if (stats || gameInfo || monsterDialog) {
-      questLog.value = new Audio(questAudio);
-      questLog.value.volume = 0.06;
-      questLog.value.play();
+      setTimeout(() => {
+        questLog.value = new Audio(questAudio);
+        questLog.value.volume = 0.06;
+        questLog.value.play();
+      }, 100);
     }
   }
 );
