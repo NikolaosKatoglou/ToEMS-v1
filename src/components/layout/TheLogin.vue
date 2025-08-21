@@ -111,7 +111,7 @@ const startBgAudio = () => {
   const duration = 2000; // fade over 2s
   const step = targetVolume / (duration / 50);
 
-  bgAudio.value.volume = 0;
+  bgAudio.value.volume = 0; // start at 0
 
   return bgAudio.value.play().then(() => {
     const fadeIn = setInterval(() => {

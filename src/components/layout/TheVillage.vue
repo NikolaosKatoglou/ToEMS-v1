@@ -136,19 +136,53 @@ function getExpRequired(level) {
 const store = useStore();
 const route = useRouter();
 
+// bg audio
+const startBgAudio = () => {
+  if (!bgAudio.value) return;
+
+  const targetVolume = 0.02;
+  const duration = 2000; // fade over 2s
+  const step = targetVolume / (duration / 50);
+
+  bgAudio.value.volume = 0; // start at 0
+
+  return bgAudio.value.play().then(() => {
+    const fadeIn = setInterval(() => {
+      if (bgAudio.value) {
+        if (bgAudio.value.volume < targetVolume) {
+          bgAudio.value.volume = Math.min(
+            bgAudio.value.volume + step,
+            targetVolume
+          );
+        } else {
+          clearInterval(fadeIn);
+        }
+      }
+    }, 50);
+  });
+};
+
+const enableAudio = () => {
+  startBgAudio();
+  window.removeEventListener("click", enableAudio);
+};
+
 onMounted(() => {
   const maxHp = store.getters["player/getPlayerMaxHp"];
   store.commit("player/setHp", maxHp);
   bgAudio.value = new Audio(villageAudio);
   bgAudio.value.loop = true;
-  bgAudio.value.volume = 0.02;
-  bgAudio.value.play().catch((err) => {
-    console.warn("Autoplay blocked :(", err);
-  });
+
   clickAudio.value = new Audio(buttonAudio);
   clickAudio.value.volume = 0.02;
   downAudio.value = new Audio(popDownAudio);
   downAudio.value.volume = 0.01;
+
+  // try autoplay first
+  startBgAudio().catch(() => {
+    // attach listener if autoplay was blocked
+    window.addEventListener("click", enableAudio);
+  });
 });
 
 onBeforeUnmount(() => {
@@ -156,6 +190,7 @@ onBeforeUnmount(() => {
     bgAudio.value.pause();
     bgAudio.value = null;
   }
+  window.removeEventListener("click", enableAudio);
 });
 
 // show stats
