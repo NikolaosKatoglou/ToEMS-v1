@@ -8,6 +8,7 @@
           @click="
             goToVillage();
             buttonClick();
+            playEscapeSound();
           "
           class="village-button"
         >
@@ -23,10 +24,12 @@ import { useRouter } from "vue-router";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import lostTheme from "../../assets/audio/lost-audio.mp3";
 import buttonAudio from "../../assets/audio/button-click.wav";
+import escapeSound from "../../assets/audio/attacks/escape.wav";
 
 const router = useRouter();
 const lostAudio = ref(null);
 const clickAudio = ref(null);
+const escapeAudio = ref(null);
 
 const startLostAudio = () => {
   if (!lostAudio.value) return;
@@ -58,12 +61,20 @@ const enableAudio = () => {
   window.removeEventListener("click", enableAudio);
 };
 
+function playEscapeSound() {
+  escapeAudio.value.currentTime = 0;
+  escapeAudio.value.volume = 0.05;
+  escapeAudio.value.play();
+}
+
 onMounted(() => {
   lostAudio.value = new Audio(lostTheme);
   lostAudio.value.loop = true;
 
   clickAudio.value = new Audio(buttonAudio);
   clickAudio.value.volume = 0.02;
+
+  escapeAudio.value = new Audio(escapeSound);
 
   // try autoplay first
   startLostAudio().catch(() => {

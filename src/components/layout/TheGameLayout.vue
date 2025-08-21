@@ -53,6 +53,7 @@ import attackSound2 from "../../assets/audio/attacks/medium-attack-3.wav";
 import specialAttackSound from "../../assets/audio/attacks/heavy-attack-3.wav";
 import healSound from "../../assets/audio/attacks/heal.wav";
 import escapeSound from "../../assets/audio/attacks/escape.wav";
+import levelUpAudio from "../../assets/audio/level-up.wav";
 
 export default {
   name: "TheGameLayout",
@@ -75,6 +76,7 @@ export default {
       specialAttackAudio: new Audio(specialAttackSound),
       healAudio: new Audio(healSound),
       escapeAudio: new Audio(escapeSound),
+      leveledUpAudio: new Audio(levelUpAudio),
     };
   },
   computed: {
@@ -176,6 +178,12 @@ export default {
       this.escapeAudio.play();
     },
 
+    playLevelUpSound() {
+      this.leveledUpAudio.currentTime = 0;
+      this.leveledUpAudio.volume = 0.07;
+      this.leveledUpAudio.play();
+    },
+
     attackMonster() {
       this.playAttackSound();
       this.$store.dispatch("player/attackMonster");
@@ -229,11 +237,6 @@ export default {
         this.$store.dispatch("monster/attackPlayer");
         this.checkWinner();
       }
-    },
-
-    surrender() {
-      this.winner = this.$store.getters["monster/getMonsterName"];
-      this.$store.commit("player/setHp", 100);
     },
 
     async checkWinner() {
@@ -319,6 +322,14 @@ export default {
   unmounted() {
     this.battleAudio.pause();
     window.removeEventListener("click", this.unlockAudio);
+  },
+
+  watch: {
+    playerLevel(newLevel, oldLevel) {
+      if (newLevel > oldLevel) {
+        this.playLevelUpSound();
+      }
+    },
   },
 };
 </script>

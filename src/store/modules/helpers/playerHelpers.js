@@ -49,7 +49,7 @@ export function calcFinalExp(monsterLevel, monsterName) {
   return Math.floor(baseExp * multiplier);
 }
 
-// damage handling helper (optional export if you want to keep logic in actions)
+// damage handling helper
 export function handleMonsterDamage({ commit, rootState, dispatch }, damage) {
   const monsterHp = rootState.monster.hp - damage;
   commit("monster/setHp", monsterHp, { root: true });

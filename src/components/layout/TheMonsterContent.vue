@@ -40,11 +40,12 @@
 </template>
 
 <script setup>
-import { computed, defineProps, ref, onMounted } from "vue";
+import { computed, defineProps, ref, onMounted} from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { calcFinalExp } from "../../store/modules/helpers/playerHelpers";
 import buttonAudio from "../../assets/audio/button-click.wav";
+
 
 defineProps({ showExp: Boolean });
 
@@ -52,6 +53,7 @@ const store = useStore();
 const route = useRoute();
 
 const clickAudio = ref(null);
+
 
 const nextMonsters = computed(() => store.getters["monster/getNextMonsters"]);
 const leveledUp = computed(() => store.getters["player/getPlayerLeveledUp"]);
@@ -66,8 +68,10 @@ const expReward = computed(() => {
 
 onMounted(() => {
   clickAudio.value = new Audio(buttonAudio);
-  clickAudio.value.volume = 0.02;
+  clickAudio.value.volume = 0.08;
 });
+
+
 
 function buttonClick() {
   if (clickAudio.value) clickAudio.value.currentTime = 0;
