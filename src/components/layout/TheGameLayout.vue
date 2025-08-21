@@ -102,12 +102,12 @@ export default {
     // sounds
     playWinAudio() {
       this.winAudio.currentTime = 0;
-      this.winAudio.volume = 0.02;
+      this.winAudio.volume = 0.07;
       this.winAudio.play();
     },
     playLossAudio() {
       this.lossAudio.currentTime = 0;
-      this.lossAudio.volume = 0.02;
+      this.lossAudio.volume = 0.07;
       this.lossAudio.play();
     },
 
@@ -126,7 +126,7 @@ export default {
       this.battleAudio.loop = true;
       this.battleAudio.volume = 0;
 
-      const targetVolume = 0.02;
+      const targetVolume = 0.1;
       const step = 0.002;
       const interval = 200;
 
@@ -144,35 +144,35 @@ export default {
 
     playAttackSound() {
       this.attackAudio.currentTime = 0;
-      this.attackAudio.volume = 0.02;
+      this.attackAudio.volume = 0.05;
       this.attackAudio.play();
     },
     playDoubleAttackSound() {
       this.attackAudio.currentTime = 0;
-      this.attackAudio.volume = 0.02;
+      this.attackAudio.volume = 0.05;
       this.attackAudio.play();
       setTimeout(() => {
         this.attackAudio2.currentTime = 0;
-        this.attackAudio2.volume = 0.02;
+        this.attackAudio2.volume = 0.05;
         this.attackAudio2.play();
       }, 100);
     },
 
     playSpecialAttackSound() {
       this.specialAttackAudio.currentTime = 0;
-      this.specialAttackAudio.volume = 0.02;
+      this.specialAttackAudio.volume = 0.05;
       this.specialAttackAudio.play();
     },
 
     playHealSound() {
       this.healAudio.currentTime = 0;
-      this.healAudio.volume = 0.02;
+      this.healAudio.volume = 0.07;
       this.healAudio.play();
     },
 
     playEscapeSound() {
       this.escapeAudio.currentTime = 0;
-      this.escapeAudio.volume = 0.02;
+      this.escapeAudio.volume = 0.05;
       this.escapeAudio.play();
     },
 

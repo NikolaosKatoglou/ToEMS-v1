@@ -140,7 +140,7 @@ const route = useRouter();
 const startBgAudio = () => {
   if (!bgAudio.value) return;
 
-  const targetVolume = 0.02;
+  const targetVolume = 0.1;
   const duration = 2000; // fade over 2s
   const step = targetVolume / (duration / 50);
 
@@ -174,9 +174,9 @@ onMounted(() => {
   bgAudio.value.loop = true;
 
   clickAudio.value = new Audio(buttonAudio);
-  clickAudio.value.volume = 0.02;
+  clickAudio.value.volume = 0.06;
   downAudio.value = new Audio(popDownAudio);
-  downAudio.value.volume = 0.01;
+  downAudio.value.volume = 0.06;
 
   // try autoplay first
   startBgAudio().catch(() => {
@@ -221,7 +221,7 @@ watch(
   ([stats, gameInfo, monsterDialog]) => {
     if (stats || gameInfo || monsterDialog) {
       questLog.value = new Audio(questAudio);
-      questLog.value.volume = 0.01;
+      questLog.value.volume = 0.06;
       questLog.value.play();
     }
   }
@@ -237,6 +237,7 @@ function toggleStats() {
     showMonsterDialog.value = false;
     showGameInfo.value = false;
   }
+
   showStats.value = !showStats.value;
 }
 
@@ -245,6 +246,7 @@ function toggleGameInfo() {
     showStats.value = false;
     showMonsterDialog.value = false;
   }
+
   showGameInfo.value = !showGameInfo.value;
 }
 
@@ -252,8 +254,10 @@ function toggleMonsterSelect() {
   if (!showMonsterDialog.value) {
     showStats.value = false;
     showGameInfo.value = false;
+
     store.dispatch("monster/selectNextMonsters");
   }
+
   showMonsterDialog.value = !showMonsterDialog.value;
 }
 

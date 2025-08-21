@@ -107,7 +107,7 @@ const clickAudio = ref(null);
 const startBgAudio = () => {
   if (!bgAudio.value) return;
 
-  const targetVolume = 0.02;
+  const targetVolume = 0.1;
   const duration = 2000; // fade over 2s
   const step = targetVolume / (duration / 50);
 
@@ -139,7 +139,7 @@ onMounted(() => {
   bgAudio.value.loop = true;
 
   clickAudio.value = new Audio(buttonAudio);
-  clickAudio.value.volume = 0.02;
+  clickAudio.value.volume = 0.08;
 
   // try autoplay first
   startBgAudio().catch(() => {
@@ -229,7 +229,7 @@ async function submitForm() {
     setTimeout(() => {
       doorAudio.value = new Audio(doorOpen);
       doorAudio.value.play();
-      doorAudio.value.volume = 0.04;
+      doorAudio.value.volume = 0.08;
       doorsOpen.value = true;
       setTimeout(() => {
         router.push("/village");
