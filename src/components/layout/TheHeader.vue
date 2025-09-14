@@ -5,7 +5,15 @@
     </header>
 
     <div v-if="isLoggedIn">
-      <button @click="logout();buttonClick()" class="logout-btn">Logout</button>
+      <button
+        @click="
+          logout();
+          buttonClick();
+        "
+        class="logout-btn"
+      >
+        Logout
+      </button>
     </div>
   </div>
 </template>
@@ -47,7 +55,9 @@ function buttonClick() {
 <style scoped>
 .main-header {
   position: fixed;
-  all: unset;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,6 +72,7 @@ function buttonClick() {
   text-shadow: 1px 1px 2px black;
   transition: filter 0.2s ease;
   max-width: 100%;
+  z-index: 5;
 }
 
 h1 {
@@ -88,8 +99,9 @@ h1 {
   cursor: pointer;
   text-shadow: 1px 1px 2px black;
   transition: filter 0.2s ease;
-  z-index: 900;
   transform: translateX(35%) translateY(50%);
+  position: relative;
+  z-index: 10;
 }
 
 .logout-btn:hover {
@@ -107,10 +119,6 @@ h1 {
     padding: 0 0.5rem;
   }
 
-  .logout-container {
-    top: 4.6rem;
-  }
-
   .logout-btn {
     width: 120px;
     height: 42px;
@@ -120,20 +128,14 @@ h1 {
 
 @media (max-width: 480px) {
   .main-header {
-    position: fixed;
-    width: 420px;
+    width: 100%;
     background-size: 100% 100%;
     height: 4rem;
-    z-index: 3;
   }
 
   h1 {
     font-size: 1.3rem;
     padding: 0 0.5rem;
-  }
-
-  .logout-container {
-    top: 4.3rem;
   }
 
   .logout-btn {
