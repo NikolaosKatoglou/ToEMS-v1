@@ -19,6 +19,7 @@
 
       <div class="login-container" v-if="showLoginForm">
         <h2>{{ mode === "login" ? "Login" : "Signup" }}</h2>
+        <h2>Use any mock email to enter/test</h2>
 
         <form @submit.prevent="submitForm">
           <div class="form-control">
